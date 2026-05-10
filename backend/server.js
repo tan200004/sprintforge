@@ -168,7 +168,13 @@ const startMyServer = () => {
   });
   
   console.log('🔌 Initializing database connection...');
-  connectDatabase();
+  try {
+    connectDatabase().catch(err => {
+      console.error('🔥 Critical Database Error during background connect:', err);
+    });
+  } catch (err) {
+    console.error('🔥 Immediate Database Sync Error:', err);
+  }
 };
 
 startMyServer();
