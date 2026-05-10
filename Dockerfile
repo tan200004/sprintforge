@@ -7,7 +7,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Setup the backend and serve
-FROM node:18-alpine
+FROM node:18
 WORKDIR /app/backend
 
 # Copy backend package.json and install dependencies

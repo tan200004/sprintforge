@@ -157,7 +157,7 @@ const portNumber = process.env.PORT || 5000;
 
 const startMyServer = async () => {
   await connectDatabase();
-  myHttpServer.listen(portNumber, () => {
+  myHttpServer.listen(portNumber, '0.0.0.0', () => {
     console.log(`\n🚀 Server is up on port ${portNumber}`);
     console.log(`   Env : ${process.env.NODE_ENV}`);
     console.log(`   URL : ${process.env.CLIENT_URL}`);
