@@ -135,7 +135,6 @@ TheUserSchema.virtual('publicProfile').get(function () {
   };
 });
 
-TheUserSchema.index({ email: 1 });
 TheUserSchema.index({ role: 1 });
 
 const UserModel = mongoose.model('User', TheUserSchema);

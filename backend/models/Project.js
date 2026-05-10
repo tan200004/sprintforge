@@ -104,7 +104,6 @@ TheProjectSchema.virtual('completionPercent').get(function () {
 TheProjectSchema.index({ owner: 1 });
 TheProjectSchema.index({ status: 1 });
 TheProjectSchema.index({ 'members.user': 1 });
-TheProjectSchema.index({ slug: 1 });
 
 const ProjectModel = mongoose.model('Project', TheProjectSchema);
 module.exports = ProjectModel;

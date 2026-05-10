@@ -7,7 +7,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Stage 2: Setup the backend and serve
-FROM node:18
+FROM node:18-slim
 WORKDIR /app/backend
 
 # Copy backend package.json and install dependencies
@@ -19,9 +19,6 @@ COPY backend/ ./
 
 # Copy compiled frontend from Stage 1
 COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
-
-# Expose the port (Railway provides PORT dynamically)
-EXPOSE 5000
 
 # Set environment to production
 ENV NODE_ENV=production

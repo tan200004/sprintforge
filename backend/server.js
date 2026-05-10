@@ -110,6 +110,9 @@ myExpressApp.use('/api/auth/register', loginLimiter);
 myExpressApp.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 myExpressApp.use((req, res, nextStep) => {
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  }
   req.io = myWebSocket;
   nextStep();
 });
@@ -139,6 +142,7 @@ myExpressApp.use('/api/*', (req, res) => {
 
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../frontend/dist');
+  console.log(`📁 Serving frontend from: ${frontendPath}`);
   myExpressApp.use(express.static(frontendPath));
   myExpressApp.get('*', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
@@ -156,12 +160,14 @@ myExpressApp.use((err, req, res, nextStep) => {
 const portNumber = process.env.PORT || 5000;
 
 const startMyServer = () => {
+  console.log('🏁 Starting server bootstrap...');
   myHttpServer.listen(portNumber, '0.0.0.0', () => {
     console.log(`\n🚀 Server is up on port ${portNumber}`);
     console.log(`   Env : ${process.env.NODE_ENV}`);
     console.log(`   URL : ${process.env.CLIENT_URL}`);
   });
   
+  console.log('🔌 Initializing database connection...');
   connectDatabase();
 };
 
