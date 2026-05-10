@@ -1,207 +1,78 @@
 # SprintForge 🚀
 
-> AI-powered agile project management and team collaboration platform
+Hey there! Welcome to **SprintForge**. 
 
-![SprintForge](https://img.shields.io/badge/SprintForge-v1.0.0-6366f1?style=for-the-badge)
-![Node](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js)
-![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)
-![MongoDB](https://img.shields.io/badge/MongoDB-7-47A248?style=for-the-badge&logo=mongodb)
+I built this project because I wanted a simpler, faster way to handle project management. Think of it like a mashup of Jira, Linear, and Notion—but way lighter and easier to use. 
 
----
-
-## Overview
-
-SprintForge is a full-stack SaaS platform combining the best features of Jira, Linear, Notion, and Slack — built for modern engineering teams that move fast.
-
-**Key Features:**
-- 🔐 JWT authentication with refresh tokens and email verification
-- 🛡️ Role-Based Access Control (Admin, Project Manager, Member)
-- 📊 Analytics dashboard with Recharts
-- 🗂️ Drag-and-drop Kanban board (dnd-kit)
-- ⚡ Real-time updates via Socket.IO
-- 🤖 AI-powered task/sprint/bug/meeting tools
-- 🌙 Dark/Light theme
-- ⌨️ Command palette (Ctrl+K)
+Whether you're working solo or with a team, this app helps you track bugs, plan sprints, and keep everything organized without feeling like you're fighting the software.
 
 ---
 
-## Project Structure
+## 🛠 What's inside?
 
-```
-sprintforge/
-├── backend/         # Node.js + Express + MongoDB API
-│   ├── config/      # DB connection
-│   ├── controllers/ # Business logic
-│   ├── middleware/  # Auth + RBAC guards
-│   ├── models/      # Mongoose schemas
-│   ├── routes/      # Express routers
-│   ├── services/    # Email + realtime services
-│   ├── utils/       # Response handler, token helper
-│   └── validators/  # express-validator rules
-└── frontend/        # React + Vite + Tailwind
-    └── src/
-        ├── context/ # Auth, Theme, Socket, Notification
-        ├── pages/   # All page components
-        ├── components/ # Reusable UI components
-        ├── services/ # API client + service modules
-        └── layouts/ # AppLayout, AuthLayout
-```
+I used a modern JavaScript stack to put this together:
+
+- **Frontend**: React 18, Vite, and Tailwind CSS. I also used Framer Motion for some nice animations and dnd-kit for the drag-and-drop Kanban board.
+- **Backend**: Node.js and Express.js, connecting to a MongoDB database.
+- **Real-time stuff**: Socket.IO makes sure you see updates instantly without refreshing.
+- **Cool extras**: I threw in an AI assistant to help write bug reports and summarize meetings, plus a command palette (just hit `Ctrl+K`).
 
 ---
 
-## Prerequisites
+## 🚀 How to run it locally
 
-- **Node.js** v18+
-- **MongoDB** running locally (`mongodb://localhost:27017`) or a MongoDB Atlas URI
-- **npm** v9+
+If you want to spin this up on your own machine, it's pretty straightforward. You just need Node.js and MongoDB installed.
 
----
-
-## Quick Start
-
-### 1. Clone and install
-
+### 1. Grab the dependencies
+Open two terminal windows. In the first one, get the backend ready:
 ```bash
-# Backend
-cd sprintforge/backend
-npm install
-
-# Frontend
-cd sprintforge/frontend
+cd backend
 npm install
 ```
 
-### 2. Configure environment
+In the second one, do the same for the frontend:
+```bash
+cd frontend
+npm install
+```
 
-Edit `backend/.env` with your settings:
-
+### 2. Set up your environment variables
+In the `backend` folder, create a `.env` file. You can copy this and just swap in your own details:
 ```env
 MONGO_URI=mongodb://localhost:27017/sprintforge
-JWT_ACCESS_SECRET=your_secret_here
-JWT_REFRESH_SECRET=your_refresh_secret_here
-SMTP_HOST=smtp.gmail.com
-SMTP_USER=your@email.com
-SMTP_PASS=your_app_password
+JWT_ACCESS_SECRET=super_secret_string
+JWT_REFRESH_SECRET=another_super_secret_string
 CLIENT_URL=http://localhost:5173
 ```
+*(Note: If you don't have a local MongoDB running, the app will actually fall back to a temporary in-memory database and create some dummy users for you so you can still test it out!)*
 
-### 3. Start development servers
-
+### 3. Fire it up!
+Start the backend server:
 ```bash
-# Terminal 1 — Backend (port 5000)
-cd backend && npm run dev
-
-# Terminal 2 — Frontend (port 5173)
-cd frontend && npm run dev
+cd backend
+npm run dev
 ```
 
-Open **http://localhost:5173** in your browser.
-
----
-
-## API Reference
-
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/auth/register` | — | Register new account |
-| POST | `/api/auth/login` | — | Login |
-| POST | `/api/auth/logout` | — | Logout |
-| POST | `/api/auth/refresh` | Cookie | Refresh access token |
-| GET | `/api/auth/verify-email/:token` | — | Verify email |
-| POST | `/api/auth/forgot-password` | — | Request reset link |
-| POST | `/api/auth/reset-password/:token` | — | Reset password |
-| GET | `/api/auth/me` | JWT | Get current user |
-| GET | `/api/projects` | JWT | List projects |
-| POST | `/api/projects` | PM+ | Create project |
-| GET | `/api/projects/:id` | JWT | Get project |
-| PUT | `/api/projects/:id` | PM+ | Update project |
-| DELETE | `/api/projects/:id` | Admin | Delete project |
-| POST | `/api/projects/:id/members` | PM+ | Add member |
-| GET | `/api/tasks` | JWT | List tasks |
-| POST | `/api/tasks` | JWT | Create task |
-| PUT | `/api/tasks/:id` | JWT | Update task |
-| PUT | `/api/tasks/:id/move` | JWT | Move kanban column |
-| DELETE | `/api/tasks/:id` | JWT | Delete task |
-| GET | `/api/comments/task/:taskId` | JWT | Get comments |
-| POST | `/api/comments` | JWT | Post comment |
-| GET | `/api/notifications` | JWT | Get notifications |
-| PUT | `/api/notifications/read-all` | JWT | Mark all read |
-| GET | `/api/dashboard` | JWT | Dashboard metrics |
-| GET | `/api/activity` | JWT | Activity feed |
-| GET | `/api/users` | Admin | List all users |
-| GET | `/api/users/profile` | JWT | Get own profile |
-| PUT | `/api/users/profile` | JWT | Update profile |
-| PUT | `/api/users/:id/role` | Admin | Change user role |
-| POST | `/api/ai/generate-description` | JWT | AI task description |
-| POST | `/api/ai/sprint-summary` | JWT | AI sprint summary |
-| POST | `/api/ai/explain-bug` | JWT | AI bug explainer |
-| POST | `/api/ai/meeting-notes` | JWT | AI meeting notes |
-
----
-
-## Socket.IO Events
-
-| Event (Client → Server) | Description |
-|--------------------------|-------------|
-| `forge:join:project` | Join a project room for live updates |
-| `forge:leave:project` | Leave a project room |
-
-| Event (Server → Client) | Description |
-|--------------------------|-------------|
-| `forge:notification` | New notification pushed |
-| `forge:task:created` | Task created in project |
-| `forge:task:updated` | Task updated |
-| `forge:task:moved` | Task moved to different column |
-| `forge:task:deleted` | Task deleted |
-| `forge:comment:new` | New comment posted |
-
----
-
-## Roles & Permissions
-
-| Action | Admin | Project Manager | Member |
-|--------|-------|-----------------|--------|
-| Manage users | ✅ | ❌ | ❌ |
-| Create projects | ✅ | ✅ | ❌ |
-| Delete projects | ✅ | ❌ | ❌ |
-| Invite members | ✅ | ✅ | ❌ |
-| Create/edit tasks | ✅ | ✅ | ✅ |
-| Delete tasks | ✅ | ❌ | Own only |
-| Comment on tasks | ✅ | ✅ | ✅ |
-| View all analytics | ✅ | Project only | Assigned only |
-
----
-
-## Deployment
-
-### Frontend → Vercel
-
-```json
-// vercel.json
-{
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
-}
-```
-
+Start the React app:
 ```bash
-cd frontend && npm run build
-# Deploy dist/ folder to Vercel
+cd frontend
+npm run dev
 ```
 
-### Backend → Render
-
-Set environment variables in the Render dashboard and deploy from Git.
+Now just head over to `http://localhost:5173` in your browser.
 
 ---
 
-## Tech Stack
+## ☁️ Deployment
 
-**Frontend:** React 18, Vite, Tailwind CSS, Framer Motion, Recharts, dnd-kit, Socket.IO Client, React Router v6
+I've set this up so it's super easy to deploy on [Railway](https://railway.app). 
 
-**Backend:** Node.js, Express.js, MongoDB, Mongoose, Socket.IO, JWT, Bcrypt, Multer, Nodemailer
+There's a `Dockerfile` right in the root folder. All you have to do is connect your GitHub repo to Railway, and it will automatically build both the React app and the Node server as a single full-stack service to keep things cheap and easy. Just don't forget to add your Environment Variables in the Railway dashboard!
 
 ---
 
-## License
+## 🤝 Contributing
 
-MIT © SprintForge 2024
+Feel free to fork this, submit PRs, or just use the code to learn. If you find a bug, open an issue!
+
+License: MIT
